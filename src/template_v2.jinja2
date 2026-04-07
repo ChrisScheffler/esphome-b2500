@@ -809,6 +809,7 @@ sensor:
     retain: false
 {%- endif %}
     unit_of_measurement: "°C"
+    state_class: measurement
     icon: "mdi:thermometer"
 {%- endif %}
 {%- if enable_esp_temperature and esp_temperature_variant == 'ntc' %}
@@ -820,6 +821,7 @@ sensor:
     retain: false
 {%- endif %}
     unit_of_measurement: "°C"
+    state_class: measurement
     accuracy_decimals: 1
     icon: "mdi:thermometer"
     calibration:
@@ -841,14 +843,18 @@ sensor:
     uart_id: uart_bus
     voltage:
       name: 'Voltage'
+      state_class: measurement
     current:
       name: 'Current'
+      state_class: measurement
     power:
       name: 'Power'
       id: power
+      state_class: measurement
     frequency:
       name: "Frequency"
       accuracy_decimals: 2
+      state_class: measurement
     update_interval: 5s
   - platform: total_daily_energy
     name: "Energy Daily"
@@ -867,6 +873,7 @@ sensor:
     filters:
       - lambda: return x / 3600.0;
     unit_of_measurement: "h"
+    state_class: measurement
     accuracy_decimals: 2
 {%- if mqtt.enabled %}
     state_topic: "{{ yaml_string(mqtt_topic) }}/esp32/uptime"
@@ -961,6 +968,7 @@ sensor:
       retain: false
 {%- endif %}
       device_class: energy
+      state_class: total
       {%- if storages|length > 1 %}
       on_value:
         then:
@@ -1188,6 +1196,7 @@ sensor:
 {%- endif %}
     accuracy_decimals: 0
     unit_of_measurement: W
+    state_class: measurement
     device_class: power
 
   - platform: template
@@ -1199,6 +1208,7 @@ sensor:
 {%- endif %}
     accuracy_decimals: 0
     unit_of_measurement: W
+    state_class: measurement
     device_class: power
 
   - platform: template
@@ -1210,6 +1220,7 @@ sensor:
 {%- endif %}
     accuracy_decimals: 3
     unit_of_measurement: kWh
+    state_class: total_increasing
     device_class: energy
 
   - platform: template
@@ -1221,6 +1232,7 @@ sensor:
 {%- endif %}
     accuracy_decimals: 3
     unit_of_measurement: kWh
+    state_class: total_increasing
     device_class: energy
 
   - platform: template
@@ -1230,13 +1242,15 @@ sensor:
     state_topic: "{{ yaml_string(mqtt_topic) }}/S/battery/remaining_capacity"
 {%- endif %}
     unit_of_measurement: Wh
-    device_class: energy    
+    state_class: total
+    device_class: energy
 {%- endif %}
 {%- if enable_powerzero and mqtt.enabled %}
 ### power zero - mqtt grid power sensor ( any who publish the grid power to mqtt )
   - platform: mqtt_subscribe
     name: "MQTT: Grid Power"
     id: mqtt_grid_power
+    state_class: measurement
     topic: "{{ yaml_string(powerzero_grid_power_topic) }}"
     on_value:
       then:    

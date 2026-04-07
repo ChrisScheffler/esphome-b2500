@@ -643,6 +643,7 @@ sensor:
     name: "Temperature"
     state_topic: "{{ yaml_string(mqtt_topic) }}/esp32/temperature"
     unit_of_measurement: "°C"
+    state_class: measurement
     icon: "mdi:thermometer"
     retain: false
 {%- endif %}
@@ -652,6 +653,7 @@ sensor:
     name: "Temperature"
     state_topic: "{{ yaml_string(mqtt_topic) }}/esp32/temperature"
     unit_of_measurement: "°C"
+    state_class: measurement
     accuracy_decimals: 1
     icon: "mdi:thermometer"
     retain: false
@@ -674,14 +676,18 @@ sensor:
     uart_id: uart_bus
     voltage:
       name: 'Voltage'
+      state_class: measurement
     current:
       name: 'Current'
+      state_class: measurement
     power:
       name: 'Power'
       id: power
+      state_class: measurement
     frequency:
       name: "Frequency"
       accuracy_decimals: 2
+      state_class: measurement
     update_interval: 5s
   - platform: total_daily_energy
     name: "Energy Daily"
@@ -700,6 +706,7 @@ sensor:
     filters:
       - lambda: return x / 3600.0;
     unit_of_measurement: "h"
+    state_class: measurement
     accuracy_decimals: 2
     state_topic: "{{ yaml_string(mqtt_topic) }}/esp32/uptime"
     retain: false
@@ -714,6 +721,7 @@ sensor:
       name: "{{ sensor_prefix(loop.index, storage) }} In 1 - Power"
       device_id: b2500_device_{{ loop.index }}
       device_class: power
+      state_class: measurement
       icon: mdi:solar-power
       retain: false
       internal: true
@@ -722,6 +730,7 @@ sensor:
       name: "{{ sensor_prefix(loop.index, storage) }} In 2 - Power"
       device_id: b2500_device_{{ loop.index }}
       device_class: power
+      state_class: measurement
       icon: mdi:solar-power
       retain: false
       internal: true
@@ -730,6 +739,7 @@ sensor:
       name: "{{ sensor_prefix(loop.index, storage) }} Total Power In"
       device_id: b2500_device_{{ loop.index }}
       device_class: power
+      state_class: measurement
       retain: false
       internal: true
     out1_power:
@@ -737,6 +747,7 @@ sensor:
       name: "{{ sensor_prefix(loop.index, storage) }} Out 1 - Power"
       device_id: b2500_device_{{ loop.index }}
       device_class: power
+      state_class: measurement
       retain: false
       internal: true
     out2_power:
@@ -744,6 +755,7 @@ sensor:
       name: "{{ sensor_prefix(loop.index, storage) }} Out 2 - Power"
       device_id: b2500_device_{{ loop.index }}
       device_class: power
+      state_class: measurement
       retain: false
       internal: true
     out_total_power:
@@ -751,6 +763,7 @@ sensor:
       name: "{{ sensor_prefix(loop.index, storage) }} Total Power Out"
       device_id: b2500_device_{{ loop.index }}
       device_class: power
+      state_class: measurement
       retain: false
       internal: true
   - platform: total_daily_energy
@@ -797,6 +810,7 @@ sensor:
     state_topic: "{{ yaml_string(mqtt_topic) }}/S/pv/energy"
     accuracy_decimals: 3
     unit_of_measurement: kWh
+    state_class: total_increasing
     device_class: energy
     retain: false
 
@@ -806,6 +820,7 @@ sensor:
     state_topic: "{{ yaml_string(mqtt_topic) }}/S/power/energy"
     accuracy_decimals: 3
     unit_of_measurement: kWh
+    state_class: total_increasing
     device_class: energy
     retain: false
 {%- endif %}
@@ -814,6 +829,7 @@ sensor:
   - platform: mqtt_subscribe
     name: "MQTT: Grid Power"
     id: mqtt_grid_power
+    state_class: measurement
     topic: "{{ yaml_string(powerzero_grid_power_topic) }}"
     on_value:
       then:    
